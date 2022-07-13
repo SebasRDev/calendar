@@ -13,7 +13,7 @@ import { useCalendarStore, useUiStore } from '../../hooks';
 export const CalendarModal = () => {
 
   const { isDateModalOpen, closeDateModal } = useUiStore();
-  const { activeEvent } = useCalendarStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
 
   const { enqueueSnackbar } = useSnackbar();
   const [formSubmitted, setformSubmitted] = useState(false)
@@ -56,7 +56,7 @@ export const CalendarModal = () => {
     })
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     setformSubmitted(true);
     const difference = differenceInSeconds(formValues.end, formValues.start);
@@ -85,20 +85,21 @@ export const CalendarModal = () => {
       return;
     }
 
+    await startSavingEvent(formValues)
     closeDateModal();
     enqueueSnackbar('Evento guardado con exito',{
       variant: 'success',
       autoHideDuration: 3000
     });
-    console.log(formValues)
+  }
 
-    //Todo
-    //remover errores en pantalla
-    //cerrar modal
+  const handleCloseModal = () => {
+    closeDateModal();
+    setformSubmitted(false);
   }
   
   return (
-    <Dialog open={isDateModalOpen} onClose={closeDateModal}>
+    <Dialog open={isDateModalOpen} onClose={handleCloseModal}>
       <DialogTitle>Nuevo evento</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -162,7 +163,7 @@ export const CalendarModal = () => {
               color="error"
               startIcon={<SaveIcon />}
             >
-              Logout
+              Save
             </Button>
           </DialogActions>
         </form>

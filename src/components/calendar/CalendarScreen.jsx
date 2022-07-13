@@ -7,6 +7,8 @@ import { localizer, getMessagesEs } from '../../helpers'
 import { CalendarEvent } from './CalendarEvent'
 import { CalendarModal } from './CalendarModal'
 import { useCalendarStore, useUiStore } from '../../hooks'
+import { FloatButton } from './FloatButton'
+import { DeleteFloatButton } from './DeleteFloatButton'
 
 export const CalendarScreen = () => {
   const { openDateModal } = useUiStore();
@@ -58,6 +60,8 @@ export const CalendarScreen = () => {
         onView={ onViewChanged }
       />
       <CalendarModal />
+      <FloatButton />
+      <DeleteFloatButton />
     </div>
   )
 }
