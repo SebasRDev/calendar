@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Link, TextField } from "@mui/material";
+import { useSnackbar } from 'notistack';
 
 import { FormWrapper, Title } from "./style";
-import { useForm } from "../../hooks";
+import { useAuthStore, useForm } from "../../hooks";
 
 const loginFormFields = {
   email: "",
   password: "",
 };
 
+
 export const LoginForm = ({setIsRegistered}) => {
+  const { startLogin, errorMessage } = useAuthStore();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [{ email, password }, handleInputChange] = useForm(loginFormFields);
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    console.table({email, password});
+    startLogin({email, password});
   }
+
+  useEffect(() => {
+    if(errorMessage !== undefined){
+      enqueueSnackbar(errorMessage,{
+        variant: 'error',
+        autoHideDuration: 3000
+      });
+    }
+  }, [errorMessage])
+  
 
 
   return (
