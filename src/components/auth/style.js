@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ContainerWrapper } from '../shared/container/style';
 
 
-export const FormWrapper = styled.div`
+export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
