@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Link, TextField } from "@mui/material";
 
 import { FormWrapper, Title } from "./style";
-import { useForm } from "../../hooks";
+import { useAuthStore, useForm } from "../../hooks";
+import { useSnackbar } from "notistack";
 
 const registerFormFields = {
   name: "",
@@ -11,17 +12,44 @@ const registerFormFields = {
   password2: "",
 };
 
-export const RegisterForm = ({setIsRegistered}) => {
+export const RegisterForm = ({ setIsRegistered }) => {
   const [{ name, email, password, password2 }, handleInputChange] =
     useForm(registerFormFields);
+  const {startRegister, errorMessage} = useAuthStore();
+  const { enqueueSnackbar } = useSnackbar();
 
-    const loginSubmit = (e) => {
-      e.preventDefault();
-      console.table({name, email, password, password2});
+  const registerSubmit = (e) => {
+    e.preventDefault();
+    if(password !== password2){
+      enqueueSnackbar('Las contraseñas deben ser iguales',{
+        variant: 'error',
+        autoHideDuration: 3000,
+        anchorOrigin:{
+          vertical: 'top',
+          horizontal: 'center'
+        },
+        preventDuplicate: true
+      });
     }
+    startRegister({ name, email, password });
+  }
+
+  useEffect(()=>{
+    if(errorMessage !== undefined){
+      enqueueSnackbar(errorMessage,{
+        variant: 'error',
+        autoHideDuration: 3000,
+        anchorOrigin:{
+          vertical: 'top',
+          horizontal: 'center'
+        },
+        preventDuplicate: true
+      });
+    }
+  },[errorMessage])
 
   return (
-    <FormWrapper onSubmit={loginSubmit}>
+    <FormWrapper onSubmit={registerSubmit}>
       <Title>Register</Title>
       <TextField
         label="Name"
@@ -55,7 +83,9 @@ export const RegisterForm = ({setIsRegistered}) => {
         value={password2}
         onChange={handleInputChange}
       />
-      <Button variant="contained" type="submit">Registrarse</Button>
+      <Button variant="contained" type="submit">
+        Registrarse
+      </Button>
       <Link
         component="button"
         variant="body2"

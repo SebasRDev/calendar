@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Button, Link, TextField } from "@mui/material";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 
 import { FormWrapper, Title } from "./style";
 import { useAuthStore, useForm } from "../../hooks";
@@ -10,8 +10,7 @@ const loginFormFields = {
   password: "",
 };
 
-
-export const LoginForm = ({setIsRegistered}) => {
+export const LoginForm = ({ setIsRegistered }) => {
   const { startLogin, errorMessage } = useAuthStore();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -19,18 +18,22 @@ export const LoginForm = ({setIsRegistered}) => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    startLogin({email, password});
-  }
+    startLogin({ email, password });
+  };
 
   useEffect(() => {
-    if(errorMessage !== undefined){
-      enqueueSnackbar(errorMessage,{
-        variant: 'error',
-        autoHideDuration: 3000
+    if (errorMessage !== undefined) {
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+        autoHideDuration: 3000,
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+        preventDuplicate: true,
       });
     }
-  }, [errorMessage])
-  
+  }, [errorMessage]);
 
 
   return (
@@ -54,7 +57,12 @@ export const LoginForm = ({setIsRegistered}) => {
         value={password}
         onChange={handleInputChange}
       />
-      <Button variant="contained" type="submit">Ingresar</Button>
+      <Button 
+        variant="contained" 
+        type="submit"
+      >
+        Ingresar
+      </Button>
       <Link
         component="button"
         variant="body2"

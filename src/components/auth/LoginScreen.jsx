@@ -6,14 +6,25 @@ import { RegisterForm } from "./RegisterForm";
 import { LoginContainer } from "./style";
 
 import bg from "../../assets/bg_login.jpeg";
+import { useEffect } from "react";
 
 export const LoginScreen = () => {
-  const [isRegistered, setIsRegistered] = useState(true)
+  const [isRegistered, setIsRegistered] = useState(true);
 
   return (
     <FullHeight>
       <LoginContainer style={{ backgroundImage: `url(${bg})` }}>
-        {isRegistered ? <LoginForm isRegistered={isRegistered} setIsRegistered={setIsRegistered}/> : <RegisterForm isRegistered={isRegistered} setIsRegistered={setIsRegistered}/>}
+        {isRegistered ? (
+          <LoginForm
+            isRegistered={isRegistered}
+            setIsRegistered={setIsRegistered}
+          />
+        ) : (
+          <RegisterForm
+            isRegistered={isRegistered}
+            setIsRegistered={setIsRegistered}
+          />
+        )}
       </LoginContainer>
     </FullHeight>
   );
